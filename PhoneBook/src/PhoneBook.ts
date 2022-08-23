@@ -1,11 +1,16 @@
 import IPhoneBook from "./IPhoneBook"
 import Contact from "./Contact"
+
 class PhoneBook implements IPhoneBook {
-    // index: number
+    index: number
     size: number
     constructor(private phoneBookArray: Contact[] = []) {
-        // this.index = 0
+        this.index = 0
         this.size = this.phoneBookArray.length
+    }
+
+    [Symbol.iterator](): Iterator<Contact | undefined> {
+        return this
     }
     add(contact: Contact): number {
         this.phoneBookArray.push(contact)
@@ -35,21 +40,18 @@ class PhoneBook implements IPhoneBook {
         const removedContact = this.phoneBookArray.splice(indexOfRemovedContact, 1)
         return removedContact[0]
     }
-    // next() {
-    //     if (this.index === this.phoneBookArray.length) {
-    //         return {
-    //             done: true
-    //         }
-    //     }
-    //     return {
-    //         done: false,
-    //         value: this.phoneBookArray[this.index++]
-    //     };
-    // }
-
-    // [Symbol.iterator]() {
-    //     return this;
-    // }
+    next() {
+        if (this.index === this.phoneBookArray.length) {
+            return {
+                done: true,
+                value: undefined
+            }
+        }
+        return {
+            done: false,
+            value: this.phoneBookArray[this.index++]
+        };
+    }
 
 }
 
