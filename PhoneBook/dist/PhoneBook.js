@@ -3,8 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class PhoneBook {
     constructor(phoneBookArray = []) {
         this.phoneBookArray = phoneBookArray;
-        // this.index = 0
+        this.index = 0;
         this.size = this.phoneBookArray.length;
+    }
+    [Symbol.iterator]() {
+        return this;
     }
     add(contact) {
         this.phoneBookArray.push(contact);
@@ -31,6 +34,18 @@ class PhoneBook {
         }
         const removedContact = this.phoneBookArray.splice(indexOfRemovedContact, 1);
         return removedContact[0];
+    }
+    next() {
+        if (this.index === this.phoneBookArray.length) {
+            return {
+                done: true,
+                value: undefined
+            };
+        }
+        return {
+            done: false,
+            value: this.phoneBookArray[this.index++]
+        };
     }
 }
 function createPhoneBook() {
